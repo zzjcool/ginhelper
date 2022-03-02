@@ -1,6 +1,6 @@
 /*
-Package ginHelper brings convenience to development with gin.
+Package ginhelper brings convenience to development with gin.
 
 Automatically generate swagger documents without comments.
 */
-package ginHelper // import "github.com/zzjcool/ginhelper"
+package ginhelper // import "github.com/zzjcool/ginhelper"

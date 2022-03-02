@@ -1,8 +1,8 @@
-# ginHelper
+# ginhelper
 
 之前接触过Java的Swagger，非常简单易用，但是Golang中一直没有合适的Swagger实现。现在比较流行的方案是使用注释实现，需要手动写注释，总感觉不是特别方便，所以就自己实现了个该工具。坑是挖了很久，刚学go的时候挖的，之后无奈搬砖去写java，一直没机会填坑，最近又重新写go了，所以回来慢慢填坑。
 
-`ginHelper`支持的功能：
+`ginhelper`支持的功能：
 
 * 整合gin的参数绑定与路由设置
 * 非注释自动生成swagger
@@ -56,10 +56,10 @@ type Parameter interface {
 
 ```go
 // 定义一个Group
-var testGroup = &ginHelper.GroupRouter{
+var testGroup = &ginhelper.GroupRouter{
  Path: "test",
  Name: "Mytest",
- Routes: []*ginHelper.Route{
+ Routes: []*ginhelper.Route{
   {
    Param:  new(testBodyParam),
    Path:   "/hello/:id",
@@ -74,7 +74,7 @@ type FooStruct struct {
 
 // 接口的参数
 type testBodyParam struct {
- ginHelper.BaseParam `json:"-"`
+ ginhelper.BaseParam `json:"-"`
  Foo       string    `binding:"required"`
  FooName   string    `json:"fName" binding:"required"`
  FooInt    int       `binding:"required"`
@@ -84,7 +84,7 @@ type testBodyParam struct {
  FooStruct3 *FooStruct
 }
 
-func (param *testBodyParam) Handler(c *gin.Context) (data ginHelper.Data, err error) {
+func (param *testBodyParam) Handler(c *gin.Context) (data ginhelper.Data, err error) {
  return param, nil
 }
 
@@ -93,11 +93,11 @@ func Example() {
  router := gin.Default()
  r := router.Group("api")
     // 如果不需要swagger，可以使用New初始化
- h := ginHelper.NewWithSwagger(&ginHelper.SwaggerInfo{
+ h := ginhelper.NewWithSwagger(&ginhelper.SwaggerInfo{
   Description: "swagger test page",
   Title:       "Swagger Test Page",
   Version:     "0.0.1",
-  ContactInfoProps: ginHelper.ContactInfoProps{
+  ContactInfoProps: ginhelper.ContactInfoProps{
    Name:  "zzj",
    URL:   "https://zzj.cool",
    Email: "email@zzj.cool",
@@ -112,7 +112,7 @@ func Example() {
 
 性能测试：
 
-直接使用Gin和使用GinHelper生成的接口，两者性能差别不大：
+直接使用Gin和使用ginhelper生成的接口，两者性能差别不大：
 
 go test -bench=. -benchmem -run=none
 
