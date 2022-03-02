@@ -1,4 +1,4 @@
-module github.com/ccchieh/ginHelper
+module github.com/zzjcool/gin-helper
 
 go 1.16
 

@@ -119,10 +119,10 @@ go test -bench=. -benchmem -run=none
 ```shell
 goos: linux
 goarch: amd64
-pkg: github.com/ccchieh/ginHelper
+pkg: github.com/zzjcool/gin-helper
 cpu: AMD Ryzen 5 3400G with Radeon Vega Graphics
 BenchmarkHelp-8           236252              4836 ns/op            2258 B/op         38 allocs/op
 BenchmarkNorm-8           254684              4765 ns/op            2258 B/op         38 allocs/op
 PASS
-ok      github.com/ccchieh/ginHelper    2.466s
+ok      github.com/zzjcool/gin-helper    2.466s
 ```
