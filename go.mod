@@ -1,4 +1,4 @@
-module github.com/zzjcool/gin-helper
+module github.com/zzjcool/ginhelper
 
 go 1.16
 
