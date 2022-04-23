@@ -19,9 +19,8 @@ var exGroup = &GroupRouter{
 
 type exParam struct {
 	BaseParam
-	Foo  string `json:"foo"`
-	Id   string `uri:"id"`
-	Auth string `header:"auth" json:"-"`
+	Foo string `json:"foo"`
+	Id  string `uri:"id"`
 }
 
 func (param *exParam) Handler(c *gin.Context) (data Data, err error) {
@@ -32,9 +31,10 @@ func ExampleNewWithSwagger() {
 	router := gin.Default()
 	r := router.Group("api")
 	h := NewWithSwagger(&SwaggerInfo{
-		Description: "swagger test page",
-		Title:       "Swagger Test Page",
-		Version:     "0.0.1",
+		Description:   "swagger test page",
+		Title:         "Swagger Test Page",
+		Version:       "0.0.1",
+		AuthHeaderKey: "Authorization",
 		ContactInfoProps: ContactInfoProps{
 			Name:  "zzj",
 			URL:   "https://zzj.cool",

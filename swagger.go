@@ -18,9 +18,10 @@ var swaggerFS embed.FS
 type ContactInfoProps spec.ContactInfoProps
 
 type SwaggerInfo struct {
-	Description string
-	Title       string
-	Version     string
+	Description   string
+	Title         string
+	Version       string
+	AuthHeaderKey string
 	ContactInfoProps
 }
 
@@ -71,6 +72,11 @@ func (s *Swagger) AddPath(sp *SwaggerApi) {
 			PathItemProps: spec.PathItemProps{},
 		}
 	}
+	var sec []map[string][]string
+
+	if s.AuthHeaderKey != "" {
+		sec = []map[string][]string{{s.AuthHeaderKey: []string{}}}
+	}
 
 	operation := &spec.Operation{
 		VendorExtensible: spec.VendorExtensible{},
@@ -80,8 +86,10 @@ func (s *Swagger) AddPath(sp *SwaggerApi) {
 			Summary:     sp.Summary,
 			Parameters:  s.parameters(sp),
 			Responses:   &spec.Responses{},
+			Security:    sec,
 		},
 	}
+
 	temp := s.Spec.Paths.Paths[sp.Path]
 	switch strings.ToUpper(sp.Method) {
 	case "GET":
@@ -113,6 +121,14 @@ func (s *Swagger) AddPath(sp *SwaggerApi) {
 }
 
 func (s *Swagger) genSwaggerJson() {
+	var sec spec.SecurityDefinitions
+	if s.AuthHeaderKey != "" {
+		auth := spec.APIKeyAuth(s.AuthHeaderKey, "header")
+		auth.AddScope("global", "global")
+		auth.AddScope("accessEverything", "accessEverything")
+		sec = spec.SecurityDefinitions{s.AuthHeaderKey: auth}
+
+	}
 	s.Spec = &spec.Swagger{
 		SwaggerProps: spec.SwaggerProps{
 			Swagger: "2.0",
@@ -130,7 +146,8 @@ func (s *Swagger) genSwaggerJson() {
 			Paths: &spec.Paths{
 				Paths: map[string]spec.PathItem{},
 			},
-			Definitions: spec.Definitions{},
+			Definitions:         spec.Definitions{},
+			SecurityDefinitions: sec,
 		},
 	}
 }
@@ -145,6 +162,7 @@ func (s *Swagger) parameters(sp *SwaggerApi) (params []spec.Parameter) {
 	}
 	// 解析header
 	params = append(params, headerParams(reflect.TypeOf(param))...)
+
 	if method == http.MethodGet {
 		params = append(params, queryParams(reflect.TypeOf(param))...)
 		return params
