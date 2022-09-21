@@ -57,7 +57,9 @@ func headerParams(typeOf reflect.Type) []spec.Parameter {
 		}
 		formName := field.Tag.Get("header")
 		if formName != "" {
-			params = append(params, *spec.HeaderParam(formName))
+			hp := *spec.HeaderParam(formName)
+			hp.ParamProps.Required = false
+			params = append(params, hp)
 		}
 	}
 	return params
