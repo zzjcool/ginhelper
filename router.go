@@ -37,10 +37,12 @@ func (rt *Route) genHandlerFunc() gin.HandlerFunc {
 		err := newParam.Bind(c, newParam)
 		if err != nil {
 			newParam.Result(c, nil, err)
+			c.Abort()
 			return
 		}
 		data, err := newParam.Handler(c)
 		newParam.Result(c, data, err)
+		c.Abort()
 	}
 	return handler
 }
