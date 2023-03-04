@@ -106,6 +106,10 @@ func kindStruct2Schema(typeOf reflect.Type) (schema *spec.Schema) {
 		field := fields[0]
 		fields = fields[1:]
 
+		if isUnexportedStructName(field.Name) {
+			continue
+		}
+		
 		tags, ok := field.Tag.Lookup("json")
 		name := ""
 
@@ -176,4 +180,12 @@ func lcfirst(str string) string {
 		return string(unicode.ToLower(v)) + str[i+1:]
 	}
 	return ""
+}
+
+func isUnexportedStructName(name string) bool {
+    r := []rune(name)
+    if len(r) == 0 {
+        return false
+    }
+    return !unicode.IsUpper(r[0])
 }
