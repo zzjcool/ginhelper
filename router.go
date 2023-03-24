@@ -41,6 +41,9 @@ func (rt *Route) genHandlerFunc() gin.HandlerFunc {
 			return
 		}
 		data, err := newParam.Handler(c)
+		if c.IsAborted() {
+			return
+		}
 		newParam.Result(c, data, err)
 		c.Abort()
 	}
